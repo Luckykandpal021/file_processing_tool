@@ -12,7 +12,16 @@
         android:gravity="center"
         android:orientation="vertical"
         tools:context=".MainActivity">
-
+        <TextView
+            android:id="@+id/testTxting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test it"/>
+        <Button
+            android:id="@+id/fileLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Move To Gallery"/>
         <TextView
             android:id="@+id/uploadedImage"
             android:layout_width="wrap_content"

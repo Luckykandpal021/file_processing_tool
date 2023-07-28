@@ -1,6 +1,5 @@
 package com.example.imagepickertest;
 
-import android.app.DownloadManager;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,28 +7,34 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityResultLauncher<String> mTakePhoto;
-    private Button uploadBtn, compressBtn, downloadManage;
+    private Button uploadBtn, compressBtn, downloadManage, fileLocation;
     private ImageView uploadedImg, compressedImg;
-    private TextView testTxt, uploadedImage, compressedImageText;
+    private TextView testTxt, uploadedImage, compressedImageText, testTxting;
     private Uri resultData;
     private Bitmap compressedBitMap, uploadedImageBitmap;
+    String savedImagePath ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         compressedImageText = findViewById(R.id.compressedImage);
         downloadManage = findViewById(R.id.downloadManage);
         uploadedImage = findViewById(R.id.uploadedImage);
+        fileLocation = findViewById(R.id.fileLocation);
+        testTxting = findViewById(R.id.testTxting);
         mTakePhoto = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 result -> {
                     if (result != null) {
@@ -56,13 +63,21 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(this, "Image Size" + sizeImage, Toast.LENGTH_LONG).show();
                     }
                 });
-
         uploadBtn.setOnClickListener(view -> mTakePhoto.launch("image/*"));
 
         compressBtn.setOnClickListener(view -> compressImageButton());
 
         downloadManage.setOnClickListener(view -> saveImageToGallery());
+        fileLocation.setOnClickListener(view -> {
+            try {
+                openGallery();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
+
+
 
     @NonNull
     private String compressImageButton() {
@@ -90,14 +105,13 @@ public class MainActivity extends AppCompatActivity {
                     unitIndex++;
                 }
                 compressedBitMap = BitmapFactory.decodeByteArray(compressedImageData, 0, compressedImageData.length);
-
                 String compressedImageSizeText = compressedImageSize + " " + units[unitIndex];
-
                 compressedImg.setImageBitmap(compressedBitMap);
                 compressBtn.setVisibility(View.GONE);
                 downloadManage.setVisibility(View.VISIBLE);
                 compressedImageText.setText("Compressed Image Size: " + compressedImageSizeText);
                 compressedImageText.setVisibility(View.VISIBLE);
+//                bitmapToUri(compressedBitMap);
                 Toast.makeText(this, "Successfully Compressed", Toast.LENGTH_LONG).show();
                 return compressedImageSizeText;
             } catch (IOException e) {
@@ -108,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
 
         return "Unknown";
     }
+//        savedImagePath
+
 
     private void saveImageToGallery() {
         if (compressedBitMap == null) {
@@ -116,20 +132,40 @@ public class MainActivity extends AppCompatActivity {
         }
 
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File imageFile = new File(storageDir, "tresttest.jpg");
+        File imageFile = new File(storageDir, "tretert.jpg");
         try {
             FileOutputStream outputStream = new FileOutputStream(imageFile);
             uploadedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
-            Intent mediaScanNet = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            mediaScanNet.setData(Uri.fromFile(imageFile));
-            sendBroadcast(mediaScanNet);
             outputStream.flush();
             outputStream.close();
+
+            // Use FileProvider to get the content URI for the saved image
+            Uri contentUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", imageFile);
+
+            // Save the content URI as a string
+            savedImagePath = contentUri.toString();
+
+            Log.e("savedImagePath", savedImagePath);
             Toast.makeText(this, "Image Saved Successfully", Toast.LENGTH_LONG).show();
 
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Failed to save the image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void openGallery() throws IOException {
+        if (savedImagePath != null) {
+            Log.e("SAVEDIMAGEPATH", savedImagePath);
+
+            // Convert the savedImagePath back to a Uri
+            Uri contentUri = Uri.parse(savedImagePath);
+
+            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+            sharingIntent.setType("image/*"); // Set the MIME type to share images
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "shareTitle");
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
         }
     }
 
