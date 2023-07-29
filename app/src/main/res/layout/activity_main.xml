@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="10dp"
     android:fillViewport="true">
 
     <LinearLayout
@@ -12,16 +13,13 @@
         android:gravity="center"
         android:orientation="vertical"
         tools:context=".MainActivity">
-        <TextView
-            android:id="@+id/testTxting"
+
+
+        <ImageView
+            android:layout_marginVertical="20dp"
+            android:id="@+id/imageView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test it"/>
-        <Button
-            android:id="@+id/fileLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Move To Gallery"/>
+            android:layout_height="200dp" />
         <TextView
             android:id="@+id/uploadedImage"
             android:layout_width="wrap_content"
@@ -30,49 +28,34 @@
             android:visibility="gone"
             />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp" />
-        <TextView
-            android:id="@+id/imageSize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""/>
-
         <Button
             android:id="@+id/upload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
             android:text="Upload Image"
             android:textAlignment="center"
             android:visibility="visible" />
+
+
+        <ImageView
+            android:layout_marginVertical="20dp"
+            android:id="@+id/compressImageView"
+            android:layout_width="wrap_content"
+            android:textAlignment="center"
+            android:layout_height="200dp"
+            android:visibility="gone"/>
+
         <TextView
-            android:paddingTop="10dp"
             android:id="@+id/compressedImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Compressed Image"
+            android:textAlignment="center"
+            android:text=""
             android:visibility="gone"
             />
-        <ImageView
-            android:paddingTop="10dp"
-
-            android:id="@+id/compressImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp" />
-
         <Button
-            android:paddingTop="10dp"
+            android:layout_marginVertical="20dp"
 
-            android:id="@+id/downloadManage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Download Manager"
-            android:visibility="gone" />
-
-        <Button
             android:id="@+id/compressBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,9 +63,28 @@
             android:text="Compress Image"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/testTxt"
+        <Button
+            android:layout_marginTop="20dp"
+            android:id="@+id/downloadManage"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Download Manager"
+            android:visibility="gone" />
+
+        <Button
+            android:layout_marginVertical="10dp"
+
+            android:id="@+id/fileLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Move To Gallery"/>
+        <Button
+            android:layout_marginVertical="10dp"
+            android:id="@+id/ReUpload"
+            android:layout_width="wrap_content"
+            android:text="ReUpload"
+            android:visibility="gone"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </ScrollView>

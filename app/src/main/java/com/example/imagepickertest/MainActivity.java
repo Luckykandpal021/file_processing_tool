@@ -1,12 +1,15 @@
 package com.example.imagepickertest;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,15 +29,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityResultLauncher<String> mTakePhoto;
-    private Button uploadBtn, compressBtn, downloadManage, fileLocation;
+    private Button uploadBtn, compressBtn, downloadManage, fileLocation, ReUpload;
     private ImageView uploadedImg, compressedImg;
-    private TextView testTxt, uploadedImage, compressedImageText, testTxting;
+    private TextView  uploadedImage, compressedImageText;
     private Uri resultData;
     private Bitmap compressedBitMap, uploadedImageBitmap;
-    String savedImagePath ;
+    String savedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +50,12 @@ public class MainActivity extends AppCompatActivity {
         uploadBtn = findViewById(R.id.upload);
         compressBtn = findViewById(R.id.compressBtn);
         uploadedImg = findViewById(R.id.imageView);
-        testTxt = findViewById(R.id.testTxt);
         compressedImg = findViewById(R.id.compressImageView);
         compressedImageText = findViewById(R.id.compressedImage);
         downloadManage = findViewById(R.id.downloadManage);
         uploadedImage = findViewById(R.id.uploadedImage);
         fileLocation = findViewById(R.id.fileLocation);
-        testTxting = findViewById(R.id.testTxting);
+        ReUpload = findViewById(R.id.ReUpload);
         mTakePhoto = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 result -> {
                     if (result != null) {
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         compressBtn.setVisibility(View.VISIBLE);
                         String sizeImage = getImageSize(result);
                         uploadedImage.setVisibility(View.VISIBLE);
-                        uploadedImage.setText(sizeImage);
+                        uploadedImage.setText("Uploaded Image Size:- "+sizeImage);
                         Toast.makeText(this, "Image Size" + sizeImage, Toast.LENGTH_LONG).show();
                     }
                 });
@@ -75,14 +81,13 @@ public class MainActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
         });
+        ReUpload.setOnClickListener(v -> reUploadImage());
     }
-
 
 
     @NonNull
     private String compressImageButton() {
         if (resultData != null) {
-            testTxt.setText(resultData.toString());
             try {
                 InputStream inputStream = getContentResolver().openInputStream(resultData);
                 uploadedImageBitmap = BitmapFactory.decodeStream(inputStream);
@@ -106,51 +111,80 @@ public class MainActivity extends AppCompatActivity {
                 }
                 compressedBitMap = BitmapFactory.decodeByteArray(compressedImageData, 0, compressedImageData.length);
                 String compressedImageSizeText = compressedImageSize + " " + units[unitIndex];
+
                 compressedImg.setImageBitmap(compressedBitMap);
+                compressedImg.setVisibility(View.VISIBLE);
                 compressBtn.setVisibility(View.GONE);
                 downloadManage.setVisibility(View.VISIBLE);
                 compressedImageText.setText("Compressed Image Size: " + compressedImageSizeText);
                 compressedImageText.setVisibility(View.VISIBLE);
 //                bitmapToUri(compressedBitMap);
-                Toast.makeText(this, "Successfully Compressed", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Successfully Compressed", Toast.LENGTH_SHORT).show();
+                ReUpload.setVisibility(View.VISIBLE);
                 return compressedImageSizeText;
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Failed to compress the image", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Failed to compress the image", Toast.LENGTH_SHORT).show();
             }
         }
-
         return "Unknown";
+
     }
+
 //        savedImagePath
 
-
     private void saveImageToGallery() {
-        if (compressedBitMap == null) {
-            Toast.makeText(this, "Compressed image is empty", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File imageFile = new File(storageDir, "tretert.jpg");
         try {
-            FileOutputStream outputStream = new FileOutputStream(imageFile);
-            uploadedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
-            outputStream.flush();
-            outputStream.close();
+            if (compressedBitMap == null) {
+                Toast.makeText(this, "Compressed image is empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+            String fileName = "IMG_" + timeStamp + ".jpg";
 
-            // Use FileProvider to get the content URI for the saved image
-            Uri contentUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", imageFile);
+            // Define the content values for the image
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+            contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+            contentValues.put(MediaStore.Images.Media.WIDTH, uploadedImageBitmap.getWidth());
+            contentValues.put(MediaStore.Images.Media.HEIGHT, uploadedImageBitmap.getHeight());
+            contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Image saved using MediaStore API");
 
-            // Save the content URI as a string
-            savedImagePath = contentUri.toString();
+            // Insert the image into the MediaStore and get the content URI
+            ContentResolver contentResolver = getContentResolver();
+            Uri imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
 
-            Log.e("savedImagePath", savedImagePath);
-            Toast.makeText(this, "Image Saved Successfully", Toast.LENGTH_LONG).show();
+            try {
+                // Open an output stream to write the bitmap data to the content URI
+                OutputStream outputStream = contentResolver.openOutputStream(imageUri);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Failed to save the image", Toast.LENGTH_SHORT).show();
+                // Compress the bitmap to JPEG format and write it to the output stream
+                uploadedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
+
+                // Close the output stream
+                outputStream.close();
+
+                // Notify the MediaScanner about the new image so that it appears in the gallery
+                MediaScannerConnection.scanFile(this,
+                        new String[]{imageUri.getPath()},
+                        new String[]{"image/jpeg"},
+                        null);
+
+                // Save the content URI as a string in savedImagePath variable
+                savedImagePath = imageUri.toString();
+
+                Log.e("savedImagePath", savedImagePath);
+                Toast.makeText(this, "Image Saved Successfully", Toast.LENGTH_LONG).show();
+                fileLocation.setVisibility(View.VISIBLE);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Failed to save the image", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (Exception e) {
+            Log.e("ERRORRRR", e.toString());
+            Toast.makeText(this, "Failed to save fsdfsfsd image" + e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -195,6 +229,33 @@ public class MainActivity extends AppCompatActivity {
         }
         return "Unknown";
     }
+
+    private void reUploadImage() {
+        // Clear the resultData, compressedBitMap, and savedImagePath
+        resultData = null;
+        compressedBitMap = null;
+        savedImagePath = null;
+
+        // Clear the image views
+        uploadedImg.setImageURI(null);
+
+        // Set the compressedImg ImageView to an empty or transparent drawable
+        compressedImg.setImageDrawable(null);
+
+        // Hide the compressed image text and download manage button
+        compressedImageText.setVisibility(View.GONE);
+        downloadManage.setVisibility(View.GONE);
+
+        // Clear the text in compressedImageText
+        compressedImageText.setText(""); // Add this line
+
+        // Show the upload button again
+        uploadBtn.setVisibility(View.VISIBLE);
+
+        // Reset the text fields
+        uploadedImage.setText("");
+    }
+
 }
 
 class Constants {
