@@ -8,13 +8,13 @@ import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,13 +22,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.FileProvider;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -44,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private Uri resultData;
     private Bitmap compressedBitMap, uploadedImageBitmap;
     String savedImagePath;
+    int qualityInput;
+    private SeekBar qualityRange;
+    private TextView textViewProgress;
     private FrameLayout bgUploadImage;
-//    private CardView uploadCardView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +58,27 @@ public class MainActivity extends AppCompatActivity {
         fileLocation = findViewById(R.id.fileLocation);
         ReUpload = findViewById(R.id.ReUpload);
         bgUploadImage=findViewById(R.id.bgUploadImage);
+         qualityRange = findViewById(R.id.qualityRange);
+        textViewProgress = findViewById(R.id.textViewProgress);
+
+        qualityRange.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                qualityInput=progress;
+                String qualityProgress="Progress: " + qualityInput;
+                textViewProgress.setText(qualityProgress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Not used in this example
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Not used in this example
+            }
+        });
         mTakePhoto = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 result -> {
                     if (result != null) {
@@ -70,9 +89,12 @@ public class MainActivity extends AppCompatActivity {
                         compressBtn.setVisibility(View.VISIBLE);
                         String sizeImage = getImageSize(result);
                         uploadedImage.setVisibility(View.VISIBLE);
-                        uploadedImage.setText("Uploaded Image Size:- "+sizeImage);
+                        String uploadedImageSize="Uploaded Image Size:- "+sizeImage;
+                        uploadedImage.setText(uploadedImageSize);
                         bgUploadImage.setVisibility(View.GONE);
-                        Toast.makeText(this, "Image Size" + sizeImage, Toast.LENGTH_LONG).show();
+                        qualityRange.setVisibility(View.VISIBLE);
+                        ReUpload.setVisibility(View.VISIBLE);
+                        textViewProgress.setVisibility(View.VISIBLE);
                     }
                 });
         uploadBtn.setOnClickListener(view -> mTakePhoto.launch("image/*"));
@@ -91,8 +113,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @NonNull
-    private String compressImageButton() {
+    private void compressImageButton() {
         if (resultData != null) {
             try {
                 InputStream inputStream = getContentResolver().openInputStream(resultData);
@@ -101,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Compress the image
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                uploadedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
+                uploadedImageBitmap.compress(Bitmap.CompressFormat.JPEG, qualityInput, outputStream);
                 byte[] compressedImageData = outputStream.toByteArray();
                 outputStream.close();
 
@@ -120,20 +141,18 @@ public class MainActivity extends AppCompatActivity {
 
                 compressedImg.setImageBitmap(compressedBitMap);
                 compressedImg.setVisibility(View.VISIBLE);
-                compressBtn.setVisibility(View.GONE);
                 downloadManage.setVisibility(View.VISIBLE);
-                compressedImageText.setText("Compressed Image Size: " + compressedImageSizeText);
+                String compressedSize="Compressed Image Size: " + compressedImageSizeText;
+                compressedImageText.setText(compressedSize);
                 compressedImageText.setVisibility(View.VISIBLE);
 //                bitmapToUri(compressedBitMap);
-                Toast.makeText(this, "Successfully Compressed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Image Successfully Compressed", Toast.LENGTH_SHORT).show();
                 ReUpload.setVisibility(View.VISIBLE);
-                return compressedImageSizeText;
             } catch (IOException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "Failed to compress the image", Toast.LENGTH_SHORT).show();
             }
         }
-        return "Unknown";
 
     }
 
@@ -165,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 OutputStream outputStream = contentResolver.openOutputStream(imageUri);
 
                 // Compress the bitmap to JPEG format and write it to the output stream
-                uploadedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
+                uploadedImageBitmap.compress(Bitmap.CompressFormat.JPEG, qualityInput, outputStream);
 
                 // Close the output stream
                 outputStream.close();
@@ -180,7 +199,8 @@ public class MainActivity extends AppCompatActivity {
                 savedImagePath = imageUri.toString();
 
                 Log.e("savedImagePath", savedImagePath);
-                Toast.makeText(this, "Image Saved Successfully", Toast.LENGTH_LONG).show();
+                compressBtn.setVisibility(View.GONE);
+                Toast.makeText(this, "Image Saved in Gallery Picture Folder", Toast.LENGTH_SHORT).show();
                 fileLocation.setVisibility(View.VISIBLE);
 
             } catch (IOException e) {
@@ -189,14 +209,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
         } catch (Exception e) {
-            Log.e("ERRORRRR", e.toString());
-            Toast.makeText(this, "Failed to save fsdfsfsd image" + e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to save image" + e, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void openGallery() throws IOException {
         if (savedImagePath != null) {
-            Log.e("SAVEDIMAGEPATH", savedImagePath);
 
             // Convert the savedImagePath back to a Uri
             Uri contentUri = Uri.parse(savedImagePath);
@@ -264,6 +282,8 @@ public class MainActivity extends AppCompatActivity {
         fileLocation.setVisibility(View.GONE);
         compressedImg.setVisibility(View.GONE);
         uploadedImg.setVisibility(View.GONE);
+        qualityRange.setVisibility(View.GONE);
+        textViewProgress.setVisibility(View.GONE);
     }
 
 }

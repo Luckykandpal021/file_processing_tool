@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Compress Image</string>
+    <string name="app_name">Brunch</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="compress_image">Compress Image</string>
+    <string name="save_image">Save Image</string>
+    <string name="share_image">Share</string>
+    <string name="quality_input">Quality: 50</string>
 </resources>
