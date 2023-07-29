@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 
 import java.io.ByteArrayOutputStream;
@@ -42,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private Uri resultData;
     private Bitmap compressedBitMap, uploadedImageBitmap;
     String savedImagePath;
-
+    private FrameLayout bgUploadImage;
+//    private CardView uploadCardView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,16 +59,19 @@ public class MainActivity extends AppCompatActivity {
         uploadedImage = findViewById(R.id.uploadedImage);
         fileLocation = findViewById(R.id.fileLocation);
         ReUpload = findViewById(R.id.ReUpload);
+        bgUploadImage=findViewById(R.id.bgUploadImage);
         mTakePhoto = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 result -> {
                     if (result != null) {
                         resultData = result;
+                        uploadedImg.setVisibility(View.VISIBLE);
                         uploadedImg.setImageURI(result);
                         uploadBtn.setVisibility(View.GONE);
                         compressBtn.setVisibility(View.VISIBLE);
                         String sizeImage = getImageSize(result);
                         uploadedImage.setVisibility(View.VISIBLE);
                         uploadedImage.setText("Uploaded Image Size:- "+sizeImage);
+                        bgUploadImage.setVisibility(View.GONE);
                         Toast.makeText(this, "Image Size" + sizeImage, Toast.LENGTH_LONG).show();
                     }
                 });
@@ -248,12 +254,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Clear the text in compressedImageText
         compressedImageText.setText(""); // Add this line
-
+        bgUploadImage.setVisibility(View.VISIBLE);
         // Show the upload button again
         uploadBtn.setVisibility(View.VISIBLE);
 
         // Reset the text fields
         uploadedImage.setText("");
+        ReUpload.setVisibility(View.GONE);
+        fileLocation.setVisibility(View.GONE);
+        compressedImg.setVisibility(View.GONE);
+        uploadedImg.setVisibility(View.GONE);
     }
 
 }
