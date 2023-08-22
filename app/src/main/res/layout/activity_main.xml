@@ -1,119 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:paddingHorizontal="10dp">
 
-    <LinearLayout
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity"
+
+    tools:openDrawer="start">
+
+
+    <include
+        layout="@layout/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent" />
 
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginVertical="20dp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/uploadedImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:visibility="gone" />
-        <SeekBar
-            android:id="@+id/qualityRange"
-            android:thumbTint="@color/primary_color"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="100"
-            android:progress="50" />
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/textViewProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/quality_input"
-            android:layout_gravity="center_horizontal" />
-
-        <FrameLayout
-            android:id="@+id/bgUploadImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:background="@drawable/customborder">
-
-
-            <Button
-                android:id="@+id/upload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/upload_image"
-
-                android:textAlignment="center"
-                android:textColor="@color/button_text_color"
-                android:visibility="visible" />
-
-        </FrameLayout>
-
-        <ImageView
-            android:id="@+id/compressImageView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginVertical="20dp"
-            android:textAlignment="center"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/compressedImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAlignment="center"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/compressBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:text="@string/compress_image"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/downloadManage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/save_image"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/fileLocation"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/share_image"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/ReUpload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"
-            android:text="@string/upload_image"
-             />
-    </LinearLayout>
-</ScrollView>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/header_layout"
+        app:menu="@menu/navigation_item" />
+</androidx.drawerlayout.widget.DrawerLayout>

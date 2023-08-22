@@ -1,10 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.ImagePickerTest" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-         <item name="colorPrimary">@color/primary_color</item>
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColor">@color/black</item>
+    <style name="Base.Theme.ImagePickerTest" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/dayStatusBarColor</item>
     </style>
 
     <style name="Theme.ImagePickerTest" parent="Base.Theme.ImagePickerTest" />

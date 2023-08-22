@@ -1,10 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.ImagePickerTest" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="Base.Theme.ImagePickerTest" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <item name="colorPrimary">@color/my_dark_primary</item>
-        <item name="android:textColorPrimary">@color/white</item>
         <!--        <item name="android:colorBackground">#030029</item>-->
+<!--        <item name="android:statusBarColor">-->
+<!--            @android:color/transparent-->
+<!--        </item>-->
+        <item name="android:statusBarColor">@color/dayStatusBarColor</item>
 
     </style>
 </resources>

@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">Brunch</string>
     <string name="upload_image">Upload Image</string>
-    <string name="compress_image">Compress Image</string>
-    <string name="save_image">Save Image</string>
+    <string name="compress_image">Compress</string>
+    <string name="save_image">Save</string>
     <string name="share_image">Share</string>
     <string name="quality_input">Quality: 50</string>
+    <string name="OpenDrawer">Open navigation drawer</string>
+    <string name="CloseDrawer">Close navigation drawer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

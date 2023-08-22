@@ -2,8 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primary_color">#0072FD</color>
-    <color name="my_dark_primary">#0072FD</color>
-    <color name="button_text_color">#FFFFFF</color> <!-- Define your desired light mode text color -->
-
+    <color name="dayStatusBarColor">#000A2C</color>
+    <color name="dayActionBarColor">#040C29</color>
+    <color name="uploadButtonColor">#FFC107</color>
+    <color name="waterMarkDividerColor">#00FF0A</color>
 </resources>
