@@ -1,53 +1,18 @@
 package com.example.imagepickertest;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
-
-import java.io.ByteArrayOutputStream;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 //    private ActivityResultLauncher<String> mTakePhoto;
@@ -73,7 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
 //        getSupportFragmentManager().beginTransaction().add(R.id.uploadImageContainer,UploadImage.getInstance()).commit();
         if(savedInstanceState==null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.uploadImageContainer, CompressImage.getInstance()).commit();
+//            getSupportFragmentManager().beginTransaction().add(R.id.uploadImageContainer, SelectedImage.getInstance()).commit();
+
+            getSupportFragmentManager().beginTransaction().add(R.id.uploadImageContainer, CompressedImage.getInstance()).commit();
+
+
         }
 
 
