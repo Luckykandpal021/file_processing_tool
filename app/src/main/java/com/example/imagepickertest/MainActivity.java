@@ -71,7 +71,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.uploadImageContainer,UploadImage.getInstance()).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.uploadImageContainer,UploadImage.getInstance()).commit();
+        if(savedInstanceState==null) {
+            getSupportFragmentManager().beginTransaction().add(R.id.uploadImageContainer, CompressImage.getInstance()).commit();
+        }
+
+
+
+
+
 //
 
         //        uploadBtn = findViewById(R.id.upload);

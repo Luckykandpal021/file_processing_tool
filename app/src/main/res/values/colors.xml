@@ -4,6 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dayStatusBarColor">#000A2C</color>
     <color name="dayActionBarColor">#040C29</color>
-    <color name="uploadButtonColor">#FFC107</color>
+    <color name="uploadButtonColor">#ffde59</color>
     <color name="waterMarkDividerColor">#00FF0A</color>
+    <color name="compressButtonColor">#008080</color>
+    <color name="selectedImageDivider">#DCDCDC</color>
 </resources>

@@ -9,4 +9,7 @@
     <string name="CloseDrawer">Close navigation drawer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="image_size">Image Size:-</string>
+    <string name="quality_range_slider">Quality Range Slider</string>
+    <string name="selected_image_preview">selected Image Preview</string>
 </resources>
