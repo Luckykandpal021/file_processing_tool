@@ -1,5 +1,7 @@
 package com.example.imagepickertest;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
@@ -80,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
                 ToastMessage("Privacy Policy Click");
 
             } else {
-                fragmentTransaction.replace(R.id.uploadImageContainer, DeveloperContact.newInstance()).commit();
-
-                ToastMessage("Developer Option Click");
-
+                String url = "https://www.linkedin.com/in/luckykandpal/";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
             }
 
 
