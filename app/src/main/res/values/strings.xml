@@ -97,4 +97,8 @@ Thank you for choosing our image compressor tool. We hope you enjoy using it as 
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="selected_image_size">"Current Image Size :-  "</string>
+    <string name="selected_quality">"Selected Quality :-  "</string>
+    <string name="compressed_image_preview">Compressed Image Preview</string>
+    <string name="selected_quality_50">Selected Quality :- 50%</string>
 </resources>
