@@ -5,12 +5,9 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:fitsSystemWindows="true"
     tools:context=".MainActivity"
-
     tools:openDrawer="start">
-
 
     <include
         layout="@layout/app_bar"
@@ -26,5 +23,4 @@
         android:backgroundTint="@color/white"
         app:headerLayout="@layout/header_layout"
         app:menu="@menu/navigation_item" />
-
 </androidx.drawerlayout.widget.DrawerLayout>

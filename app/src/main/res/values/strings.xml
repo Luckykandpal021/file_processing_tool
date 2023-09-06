@@ -11,7 +11,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="image_size">Image Size:-</string>
     <string name="quality_range_slider">Quality Range Slider</string>
+    <string name="linkedInUrl">https://www.linkedin.com/in/luckykandpal/</string>
     <string name="selected_image_preview">selected Image Preview</string>
+    <string name="app_ad_id">ca-app-pub-8949168206994239~8213816416</string>
+    <string name="banner_ad_unit">ca-app-pub-8949168206994239/8978187459</string>
     <string name="privacy_policy">
         Privacy Policy for Brunch
 
@@ -101,4 +104,11 @@ Thank you for choosing our image compressor tool. We hope you enjoy using it as 
     <string name="selected_quality">"Selected Quality :-  "</string>
     <string name="compressed_image_preview">Compressed Image Preview</string>
     <string name="selected_quality_50">Selected Quality :- 50%</string>
+    <string name="drawer_header_logo_content_description">Drawer Header Logo</string>
+    <string name="watermark_first_text">👋 Compress Image Upto</string>
+    <string name="watermark_second_text">95 Percent</string>
+    <string name="splash_screen_logo">splash screen Logo</string>
+    <string name="share_button_text">Share</string>
+    <string name="save_button_text">Save</string>
+    <string name="new_upload_button_text">New Upload</string>
 </resources>
