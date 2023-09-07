@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/optHome"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Home" />
+        <item
+            android:id="@+id/optAboutUs"
+            android:icon="@drawable/baseline_person_24"
+            android:title="About Us" />
+
+        <item
+        android:id="@+id/optPrivacyPolicy"
+        android:icon="@drawable/baseline_policy_24"
+        android:title="Privacy Policy" />
+
+    <item
+        android:id="@+id/optDevConnect"
+        android:icon="@drawable/baseline_message_24"
+        android:title="Developer Contact" />
+
+
+</menu>

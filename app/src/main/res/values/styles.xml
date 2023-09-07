@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="sliderStyle" parent="@style/Widget.MaterialComponents.Slider">
+        <item name="labelStyle">@style/My_Tooltip</item>
+    </style>
+
+    <style name="My_Tooltip" parent="Widget.MaterialComponents.Tooltip">
+        <!-- background color of the Tooltip -->
+        <item name="backgroundTint"> @color/compressButtonColor</item>
+    </style>
+
+</resources>

@@ -11,9 +11,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.AdView;
+//import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    AdView adView;
+//    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +31,13 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
         toolbar = findViewById(R.id.toolBar);
-        adView=findViewById(R.id.adView);
+//        adView=findViewById(R.id.adView);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.uploadImageContainer, UploadImage.getInstance()).commit();
         }
-        MobileAds.initialize(this);
-        AdRequest adRequest=new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+//        MobileAds.initialize(this);
+//        AdRequest adRequest=new AdRequest.Builder().build();
+//        adView.loadAd(adRequest);
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle =
